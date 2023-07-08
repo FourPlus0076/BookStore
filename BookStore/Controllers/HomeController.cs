@@ -15,9 +15,17 @@ namespace BookStore.Controllers
 
         public IActionResult Index()
         {
+            
+            return View("TempView/GausTemp.cshtml");
+        }
+        public IActionResult AboutUs()
+        {
             return View();
         }
-
+        public IActionResult ContactUs() 
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
