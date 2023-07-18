@@ -1,6 +1,7 @@
 ﻿using BookStore.Models;
 using BookStore.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Dynamic;
 
 namespace BookStore.Controllers
 {
@@ -20,9 +21,22 @@ namespace BookStore.Controllers
             var data= _bookRepository.GetAllBook();
             return View(data);
         }
+        public IActionResult AddNewBook()
+        { 
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddNewBook(BookModel model)
+        {
+            return View();
+        }
+        [Route("Book-details/{Id}",Name ="bookDetailsRoute")]
         public IActionResult GetBook(int Id) 
         {
-            var data = _bookRepository.GetBook(Id);
+            dynamic data = new ExpandoObject();
+            data.book= _bookRepository.GetBook(Id);
+            data.Name = "Gaus";
+            //var data = 
             return View(data);
         }
     }
