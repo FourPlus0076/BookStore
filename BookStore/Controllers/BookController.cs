@@ -16,37 +16,37 @@ namespace BookStore.Controllers
         {
             return View();
         }
-        public IActionResult GetAllBook()
+        public async Task<IActionResult> GetAllBook()
         {
-            var data= _bookRepository.GetAllBook();
+            var data= await _bookRepository.GetAllBook();
             return View(data);
         }
-        public IActionResult AddNewBook()
+        public IActionResult AddNewBook(bool isSuccess=false,int bookId=0)
         { 
+            ViewBag.IsSuccess = isSuccess;
+            ViewBag.BookId = bookId;
             return View();
         }
         [HttpPost]
-        public IActionResult AddNewBook(BookModel model)
+        public async Task<IActionResult> AddNewBook(BookModel model)
         {
-            var data= _bookRepository.AddNewBook(model);
-            if (data !=null)
+            var id = await _bookRepository.AddNewBook(model);
+            if (id >0)
             {
-                TempData["msg"] = "Submit Successfully--";
+                return RedirectToAction(nameof(AddNewBook),new { isSuccess=true , bookId =id});
+                //TempData["msg"] = "Submit Successfully--";
             }
-            else { TempData["msg"] = "Error Please Try Again"; }
-                
-
-
+            //else { TempData["msg"] = "Error Please Try Again"; }               
             return View();
         }
         [Route("Book-details/{Id}",Name ="bookDetailsRoute")]
-        public IActionResult GetBook(int Id) 
+        public async Task<IActionResult> GetBook(int Id) 
         {
-            dynamic data = new ExpandoObject();
-            data.book = _bookRepository.GetBookById(Id);
-            data.Name = "Gaus";
+            //dynamic data = new ExpandoObject();
+            var book = await _bookRepository.GetBookById(Id);
+            //data.Name = "Gaus";
             //var data = 
-            return View(data);
+            return View(book);
         }
     }
 }

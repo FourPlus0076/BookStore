@@ -1,5 +1,6 @@
 ﻿using BookStore.Data;
 using BookStore.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Repositories
 {
@@ -11,13 +12,47 @@ namespace BookStore.Repositories
         {
             _context=context;
         }
-        public List<BookModel> GetAllBook()
+        public async Task<List<BookModel>> GetAllBook()
         {
-            return DataSource();
+            var books = new List<BookModel>();
+            var allBooks =  await _context.Books.ToListAsync();
+            if (allBooks?.Any()==true)
+            {
+                foreach (var item in allBooks)
+                {
+                    books.Add(new BookModel()
+                    {
+                        Id= item.Id,
+                        Title= item.Title,
+                        Name= item.Name,
+                        Description= item.Description,
+                        Category= item.Category,
+                        language=item.language,
+                        TotalPages= item.TotalPages,
+                    });
+                }
+            }
+            return books;
         }
-        public BookModel GetBookById(int id)
+        public async Task<BookModel> GetBookById(int id)
         {
-            return DataSource().Where(x => x.Id == id).FirstOrDefault();
+            var book = await _context.Books.FindAsync(id);
+            if (book != null)
+            {
+                var bookDetails = new BookModel()
+                {
+                    Id= book.Id,
+                    Title = book.Title,
+                    Name = book.Name,
+                    Description = book.Description,
+                    Category = book.Category,
+                    language = book.language,
+                    TotalPages = book.TotalPages,
+                };
+                return bookDetails;
+            }
+            return null;
+
         }
         private List<BookModel> DataSource()
         {
@@ -31,7 +66,7 @@ namespace BookStore.Repositories
             };
         }
 
-        public int AddNewBook(BookModel model)
+        public async Task<int> AddNewBook(BookModel model)
         {
             var newBook = new Books()
             { 
@@ -42,8 +77,8 @@ namespace BookStore.Repositories
               language=model.language,
               CreatedDate= DateTime.UtcNow,
             };
-            _context.Books.Add(newBook);
-            _context.SaveChanges();
+            await _context.Books.AddAsync(newBook);
+           await _context.SaveChangesAsync();
 
             return newBook.Id;
 

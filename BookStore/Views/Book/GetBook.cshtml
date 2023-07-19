@@ -1,7 +1,7 @@
 ﻿@*@using BookStore.Models
 @model BookModel*@
 @{
-    ViewData["Title"] = "GetBook"+ Model.book.Title;
+    ViewData["Title"] = "GetBook"+ Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -40,13 +40,13 @@
         <div class="col-md-6">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>@Model.book.Title</h1>
+                    <h1>@Model.Title</h1>
                 </div>
             </div>
              <div class="row">
                 <div class="col-md-12 text-primary">
                     <span class="label label-primary">By : </span>
-                    <span class="monospaced">@Model.book.Name</span>
+                    <span class="monospaced">@Model.Name</span>
                 </div>
             </div>
          <div class="row">
