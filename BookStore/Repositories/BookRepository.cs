@@ -1,14 +1,21 @@
-﻿using BookStore.Models;
+﻿using BookStore.Data;
+using BookStore.Models;
 
 namespace BookStore.Repositories
 {
-    public class BookRepository
+#nullable disable    
+    public class BookRepository: IBookRepository
     {
+        private readonly BookStoreDbContext _context;
+        public BookRepository(BookStoreDbContext context)
+        {
+            _context=context;
+        }
         public List<BookModel> GetAllBook()
         {
             return DataSource();
         }
-        public BookModel GetBook(int id)
+        public BookModel GetBookById(int id)
         {
             return DataSource().Where(x => x.Id == id).FirstOrDefault();
         }
@@ -22,6 +29,24 @@ namespace BookStore.Repositories
                 new BookModel(){ Id=4,Title="html",Name="name"},
                 new BookModel(){ Id=5, Title="php", Name="gaus"}
             };
+        }
+
+        public int AddNewBook(BookModel model)
+        {
+            var newBook = new Books()
+            { 
+              Title= model.Title,
+              Name= model.Name,
+              Description= model.Description,
+              TotalPages= model.TotalPages,
+              language=model.language,
+              CreatedDate= DateTime.UtcNow,
+            };
+            _context.Books.Add(newBook);
+            _context.SaveChanges();
+
+            return newBook.Id;
+
         }
     }
 }

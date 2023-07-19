@@ -7,10 +7,10 @@ namespace BookStore.Controllers
 {
     public class BookController : Controller
     {
-        private readonly BookRepository _bookRepository;
-        public BookController()
+        private readonly IBookRepository _bookRepository;
+        public BookController(IBookRepository bookRepository)
         {
-            _bookRepository = new BookRepository();
+            _bookRepository = bookRepository;
         }
         public IActionResult Index()
         {
@@ -28,13 +28,22 @@ namespace BookStore.Controllers
         [HttpPost]
         public IActionResult AddNewBook(BookModel model)
         {
+            var data= _bookRepository.AddNewBook(model);
+            if (data !=null)
+            {
+                TempData["msg"] = "Submit Successfully--";
+            }
+            else { TempData["msg"] = "Error Please Try Again"; }
+                
+
+
             return View();
         }
         [Route("Book-details/{Id}",Name ="bookDetailsRoute")]
         public IActionResult GetBook(int Id) 
         {
             dynamic data = new ExpandoObject();
-            data.book= _bookRepository.GetBook(Id);
+            data.book = _bookRepository.GetBookById(Id);
             data.Name = "Gaus";
             //var data = 
             return View(data);
