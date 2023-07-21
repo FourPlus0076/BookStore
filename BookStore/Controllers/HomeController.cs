@@ -4,6 +4,7 @@ using System.Diagnostics;
 
 namespace BookStore.Controllers
 {
+#nullable disable
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -13,6 +14,7 @@ namespace BookStore.Controllers
         public string Title { get; set; }
         [ViewData]
         public BookModel bookModel { get; set; }
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;

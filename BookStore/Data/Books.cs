@@ -9,7 +9,7 @@
         public string Description { get; set; }
 
         public string Category { get; set; }
-        public string language { get; set; }
+        public int languageId { get; set; }
         public int TotalPages { get; set; }
 
         public string CreatedBy { get; set; }
@@ -18,5 +18,6 @@
         public DateTime UpdatedDate { get; set;}
         public bool IsActive { get; set; }
 
+        public Language language { get; set; }
     }
 }
