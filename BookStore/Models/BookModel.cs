@@ -1,7 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
-using BookStore.Data;
-using BookStore.Enums;
+using BookStore.Helpers;
 
 namespace BookStore.Models
 {
@@ -12,7 +11,7 @@ namespace BookStore.Models
         [StringLength(100, MinimumLength = 5)]
         [Required]
         public string Name { get; set; }
-        [Required]
+        [CustomValidationAttributes]
         public string Title { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
