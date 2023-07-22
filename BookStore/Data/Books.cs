@@ -18,6 +18,11 @@
         public DateTime UpdatedDate { get; set;}
         public bool IsActive { get; set; }
 
+        public string CoverImageURL { get; set; }
+
         public Language language { get; set; }
+
+        public ICollection<BookGallery> BookGallery { get; set;}
+
     }
 }

@@ -1,7 +1,9 @@
 ﻿using BookStore.Models;
 using BookStore.Repositories.Interface;
+using Microsoft.AspNetCore.Http.Metadata;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Dynamic;
 
 namespace BookStore.Controllers
@@ -10,10 +12,14 @@ namespace BookStore.Controllers
     {
         private readonly IBookRepository _bookRepository;
         private readonly ILanguageRepository _languageRepository;
-        public BookController(IBookRepository bookRepository, ILanguageRepository languageRepository)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public BookController(IBookRepository bookRepository, ILanguageRepository languageRepository, IWebHostEnvironment webHostEnvironment)
         {
             _bookRepository = bookRepository;
-            _languageRepository= languageRepository;
+            _languageRepository = languageRepository;
+            _webHostEnvironment = webHostEnvironment;
+
         }
         public IActionResult Index()
         {
@@ -54,6 +60,25 @@ namespace BookStore.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (model.CoverImage!=null)
+                {
+                    string folder = "Img/Cover/";
+                    model.CoverImageURL = await UploadImages(folder,model.CoverImage);
+                }
+                if (model.GalleryFiles!=null)
+                {
+                    string folder = "Img/Gallery/";
+                    model.Gallery = new List<GalleryModel>();
+                    foreach (var file in model.GalleryFiles)
+                    {
+                        var gellery = new GalleryModel()
+                        {
+                            Name= file.Name,
+                            URL=await UploadImages(folder, file)
+                        };
+                        model.Gallery.Add(gellery);
+                    }                   
+                }
                 var id = await _bookRepository.AddNewBook(model);
                 if (id > 0)
                 {
@@ -70,6 +95,16 @@ namespace BookStore.Controllers
             return View();
 
         }
+
+        private async Task<string> UploadImages(string folderPath, IFormFile file)
+        {
+            folderPath += Guid.NewGuid().ToString() + "_" + file.FileName;
+            string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folderPath);
+            await file.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+
+            return "/" +folderPath;
+        }
+
         [Route("Book-details/{Id}",Name ="bookDetailsRoute")]
         public async Task<IActionResult> GetBook(int Id) 
         {
@@ -80,10 +115,5 @@ namespace BookStore.Controllers
             return View(book);
         }
 
-        //public async Task<List<LanguageModel>> GetLanguages()
-        //{
-        //    var languages = await _languageRepository.GetAllLanguage();
-        //    return languages;
-        //}
     }
 }

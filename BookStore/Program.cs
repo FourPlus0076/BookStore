@@ -14,6 +14,14 @@ builder.Services.AddDbContext<BookStoreDbContext>(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
+
+#if DEBUG
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation().AddViewOptions(option => {
+    option.HtmlHelperOptions.ClientValidationEnabled = false;
+});
+
+#endif
+
 builder.Services.AddScoped<IBookRepository , BookRepository>();
 builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
 

@@ -18,8 +18,17 @@
                 </button>
             </div>
         }
-       <div class="col-md-12 col-lg-12">       
-        <form class="needs-validation" method="post" asp-controller="Book" asp-action="AddNewBook" novalidate="">
+
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status" id="MyLoader" style="display:none">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+       <div class="col-md-12 col-lg-12">
+           @* <form class="needs-validation" method="post" data-ajax="true" data-ajax-complete="MyComplete" data-ajax-success="MySuccess" data-ajax-failure="MyFailure"
+             data-ajax-loading="#MyLoader" asp-controller="Book" asp-action="AddNewBook" novalidate="">*@
+         <form class="needs-validation" method="post" enctype="multipart/form-data" asp-controller="Book" asp-action="AddNewBook" novalidate="">
           <div class="row g-3">                   
            
              <div class="col-sm-6">
@@ -36,11 +45,9 @@
             </div>
 
             <div class="col-sm-6"> 
-              <label for="lastName" class="form-label">Name</label>
-               <input type="text" asp-for=Name class="form-control" id="lastName" placeholder="Name" value="" required="" fdprocessedid="i6fcl">
-              <div class="invalid-feedback">
-                Valid last name is required.
-              </div>
+              <label asp-for=Name class="form-label"></label>
+               <input type="text" asp-for=Name class="form-control" id="lastName" placeholder="Name" value="" required="">
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
               <div class="col-sm-6">
                   <label for="firstName" asp-for="TotalPages" class="form-label"></label>
@@ -49,16 +56,27 @@
               </div>
                <div class="col-sm-6">
                    <label for="firstName" asp-for="Category" class="form-label"></label>
-                   <input asp-for="Category" class="form-control" id="firstName">
+                   <input asp-for="Category" class="form-control" id="firstName" placeholder="Category">
                    <span asp-validation-for="Category" class="text-danger"></span>
                </div>
             <div class="col-6">
-              <label for="address" class="form-label">Description</label>
-               <input asp-for=Description type="text" class="form-control" id="address" placeholder="Description" required="" fdprocessedid="5ki9tc">
-              <div class="invalid-feedback">
-                Please enter your shipping Description.
-              </div>
+              <label asp-for="Description" class="form-label"></label>
+               <input asp-for=Description type="text" class="form-control" id="address" placeholder="Description" required="">
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+
+             <div class="col-6">
+              <label asp-for="CoverImage" class="form-label"></label>
+               <input asp-for=CoverImage class="form-control" id="address" required="">
+                <span asp-validation-for="CoverImage" class="text-danger"></span>
+            </div>
+
+              <div class="col-6">
+              <label asp-for="GalleryFiles" class="form-label"></label>
+               <input asp-for=GalleryFiles class="form-control" id="address" required="">
+                <span asp-validation-for="GalleryFiles" class="text-danger"></span>
+            </div>
+
           </div>
           <hr />
           <button class="btn btn-primary" type="submit">Submit</button>
@@ -67,3 +85,14 @@
     </main>
    
 </div>
+<script>
+    function MyComplete(data)
+    {
+        alert("completed")
+    }
+    function MySuccess(data)
+    {
+      alert("Success")
+    }
+</script>
+
