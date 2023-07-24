@@ -62,8 +62,8 @@
           <h3>Top <span>Books</span></h3>
           <p>Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.</p>
         </div>
-         @*  @await Component.InvokeAsync("TopBooks")*@
-            <vc:top-books></vc:top-books>
+             @await Component.InvokeAsync("TopBooks",new {count=1 })
+            @*<vc:top-books count="1"></vc:top-books>*@
        
 
       </div>
