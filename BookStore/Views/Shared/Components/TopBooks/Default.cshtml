@@ -1,0 +1,31 @@
+﻿@model IEnumerable<BookModel>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <partial name="_TopBooks" model="item" />
+            @* @Html.Partial("_TopBooks",new BookModel())*@
+        </div>
+    }
+   
+
+    @*<div class="col-md-4">
+        <partial name="_TopBooks" model="new BookModel()"/>
+        @await Html.PartialAsync("_TopBooks",new BookModel())
+    </div>
+
+    <div class="col-md-4">
+        <partial name="_TopBooks" model="new BookModel()"/>
+        @{
+            Html.RenderPartial("_TopBooks", new BookModel());
+        }
+    </div>
+    <div class="col-md-4">
+        <partial name="_TopBooks" model="new BookModel()"/>
+        @{
+            await Html.RenderPartialAsync("_TopBooks", new BookModel());
+        }
+    </div>*@
+
+</div>

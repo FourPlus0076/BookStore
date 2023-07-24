@@ -79,6 +79,11 @@ namespace BookStore.Controllers
                         model.Gallery.Add(gellery);
                     }                   
                 }
+                if (model.BookPDF != null)
+                {
+                    string folder = "Img/pdf/";
+                    model.BookPDFURL = await UploadImages(folder, model.BookPDF);
+                }
                 var id = await _bookRepository.AddNewBook(model);
                 if (id > 0)
                 {

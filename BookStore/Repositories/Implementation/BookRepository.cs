@@ -32,6 +32,33 @@ namespace BookStore.Repositories.Implementation
                         //language = item.language.Name,
                         TotalPages = item.TotalPages,
                         CoverImageURL= item.CoverImageURL,
+                        BookPDFURL=item.BookpdfURL
+                    });
+                }
+            }
+            return books;
+        }
+
+        public async Task<List<BookModel>> GetTopBooksAsync()
+        {
+            var books = new List<BookModel>();
+            var allBooks = await _context.Books.Take(5).ToListAsync();
+            if (allBooks?.Any() == true)
+            {
+                foreach (var item in allBooks)
+                {
+                    books.Add(new BookModel()
+                    {
+                        Id = item.Id,
+                        Title = item.Title,
+                        Name = item.Name,
+                        Description = item.Description,
+                        Category = item.Category,
+                        languageId = item.languageId,
+                        //language = item.language.Name,
+                        TotalPages = item.TotalPages,
+                        CoverImageURL = item.CoverImageURL,
+                        BookPDFURL = item.BookpdfURL
                     });
                 }
             }
@@ -53,7 +80,8 @@ namespace BookStore.Repositories.Implementation
                   Id= x.Id,
                   Name= x.Name,
                   URL= x.URL,
-                }).ToList()
+                }).ToList(),
+                BookPDFURL=book.BookpdfURL
             }).FirstOrDefaultAsync();
         }
 
@@ -69,6 +97,7 @@ namespace BookStore.Repositories.Implementation
                 CreatedDate = DateTime.UtcNow,
                 Category= model.Category,
                 CoverImageURL= model.CoverImageURL,
+                BookpdfURL=model.BookPDFURL,
             };
             newBook.BookGallery=new List<BookGallery>();
             foreach (var item in model.Gallery)

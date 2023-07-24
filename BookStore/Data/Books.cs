@@ -19,6 +19,7 @@
         public bool IsActive { get; set; }
 
         public string CoverImageURL { get; set; }
+        public string BookpdfURL { get; set; }
 
         public Language language { get; set; }
 
