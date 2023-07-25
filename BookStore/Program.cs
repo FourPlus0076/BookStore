@@ -1,4 +1,5 @@
 using BookStore.Data;
+using BookStore.Models;
 using BookStore.Repositories.Implementation;
 using BookStore.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,7 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation().AddViewOptions(opt
 
 builder.Services.AddScoped<IBookRepository , BookRepository>();
 builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
+builder.Services.Configure<AlertBookModel>(builder.Configuration.GetSection("AlertBook"));
 
 var app = builder.Build();
 
