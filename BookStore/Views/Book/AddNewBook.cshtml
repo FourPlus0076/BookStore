@@ -1,5 +1,6 @@
 ﻿@using BookStore.Enums
 @model BookModel
+@inject BookStore.Repositories.Interface.ILanguageRepository _languageRepo
 @{
     ViewData["Title"] = "Add New Book";
 }
@@ -33,7 +34,7 @@
            
              <div class="col-sm-6">
                 <label for="firstName" asp-for="languageId" class="form-label"></label>
-                     <select asp-for="languageId" class="form-control" id="language" asp-items="ViewBag.language">
+                     <select asp-for="languageId" class="form-control" id="language" asp-items="(await _languageRepo.GetAllLanguage()).Select(x=> new SelectListItem(){Text=x.Name,Value=x.Id.ToString()})">
                      <option value="">Choose Language</option>
                  </select>                
                 <span asp-validation-for="languageId" class="text-danger"></span>

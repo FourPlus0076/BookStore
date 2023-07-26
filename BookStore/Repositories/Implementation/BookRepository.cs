@@ -9,9 +9,12 @@ namespace BookStore.Repositories.Implementation
     public class BookRepository : IBookRepository
     {
         private readonly BookStoreDbContext _context;
-        public BookRepository(BookStoreDbContext context)
+        private readonly IConfiguration _configuration;
+        public BookRepository(BookStoreDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
+
         }
         public async Task<List<BookModel>> GetAllBook()
         {
@@ -114,6 +117,10 @@ namespace BookStore.Repositories.Implementation
 
             return newBook.Id;
 
+        }
+        public string GetApplicationName()
+        {
+            return _configuration["AppName"];
         }
     }
 }

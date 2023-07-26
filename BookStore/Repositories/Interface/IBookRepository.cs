@@ -8,5 +8,7 @@ namespace BookStore.Repositories.Interface
         Task<BookModel> GetBookById(int id);
         Task<int> AddNewBook(BookModel model);
         Task<List<BookModel>> GetTopBooksAsync(int count);
+
+        string GetApplicationName();
     }
 }

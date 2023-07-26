@@ -2,6 +2,7 @@ using BookStore.Data;
 using BookStore.Models;
 using BookStore.Repositories.Implementation;
 using BookStore.Repositories.Interface;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,9 @@ builder.Services.AddDbContext<BookStoreDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
+//Add Identity Role
+builder.Services.AddIdentity<IdentityUser, IdentityRole>();
+//.AddEntityFrameworkStores<BookStoreDbContext>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
@@ -22,10 +25,11 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation().AddViewOptions(opt
 });
 
 #endif
-
 builder.Services.AddScoped<IBookRepository , BookRepository>();
 builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
-builder.Services.Configure<AlertBookModel>(builder.Configuration.GetSection("AlertBook"));
+builder.Services.AddSingleton<IMessageRepository, MessageRepository>();
+builder.Services.Configure<AlertBookModel>("InternalBook",builder.Configuration.GetSection("AlertBook"));
+builder.Services.Configure<AlertBookModel>("ThirdPartyBook", builder.Configuration.GetSection("ThirdPartyBook"));
 
 var app = builder.Build();
 
@@ -41,7 +45,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

@@ -1,4 +1,5 @@
 ﻿using BookStore.Models;
+using BookStore.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
@@ -10,7 +11,9 @@ namespace BookStore.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
-        private readonly AlertBookModel _option;
+        private readonly AlertBookModel _options;
+        private readonly AlertBookModel _thirdPartyBook;
+        private readonly IMessageRepository _messageRepository;
         [ViewData]
         public string CustomProperty { get; set; }
         [ViewData]       
@@ -18,20 +21,27 @@ namespace BookStore.Controllers
         [ViewData]
         public BookModel bookModel { get; set; }
 
-        public HomeController(ILogger<HomeController> logger, IConfiguration configuration, IOptionsSnapshot<AlertBookModel> option)
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration, IOptionsSnapshot<AlertBookModel> options, IOptionsSnapshot<AlertBookModel> thirdPartyBook,IMessageRepository messageRepository)
         {
             _logger = logger;
             _configuration = configuration;
-            _option = option.Value;
+            _options= options.Get("InternalBook");
+            _thirdPartyBook = thirdPartyBook.Get("ThirdPartyBook");
+            _messageRepository = messageRepository;
+
         }
 
         public IActionResult Index()
         {
-            var result = _option.IsActive;
+            var value = _messageRepository.GetName();
+            bool isActive = _options.IsActive;
+            var book = _thirdPartyBook.Name;
+            //var newBook = new AlertBookModel();
+            //_configuration.Bind("BookAlert", newBook);
 
-            //var book = _configuration.GetSection("AlertBook");
-            //var book1 = _configuration.GetValue<bool>("AlertBook");
-            //var book2 = _configuration.GetValue<string>("AlertBook");
+            //var getSection = _configuration.GetSection("BookAlert");
+            //var result = getSection.GetValue<bool>("GetValueTrue");
+            //var book = getSection.GetValue<string>("Name");
 
             CustomProperty = "Gaus This Side";
             Title = "Home Page from controller";

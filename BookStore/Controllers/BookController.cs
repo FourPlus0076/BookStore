@@ -1,10 +1,7 @@
 ﻿using BookStore.Models;
 using BookStore.Repositories.Interface;
-using Microsoft.AspNetCore.Http.Metadata;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Dynamic;
+
 
 namespace BookStore.Controllers
 {
@@ -12,14 +9,13 @@ namespace BookStore.Controllers
     {
         private readonly IBookRepository _bookRepository;
         private readonly ILanguageRepository _languageRepository;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IWebHostEnvironment _webHostEnvironment;        
 
         public BookController(IBookRepository bookRepository, ILanguageRepository languageRepository, IWebHostEnvironment webHostEnvironment)
         {
             _bookRepository = bookRepository;
             _languageRepository = languageRepository;
             _webHostEnvironment = webHostEnvironment;
-
         }
         public IActionResult Index()
         {
@@ -35,7 +31,7 @@ namespace BookStore.Controllers
             var book = new BookModel() { 
               //language= "Urdu",
             };
-            ViewBag.language = new SelectList(await _languageRepository.GetAllLanguage(),"Id","Name");
+            //ViewBag.language = new SelectList(await _languageRepository.GetAllLanguage(),"Id","Name");
             //ViewBag.language = new List<string>() {"Hindi","English","Urdu" };
             //ViewBag.language = new SelectList(GetLanguages(),"Id","Name");
             //var group1 = new SelectListGroup() { Name = "Group 1" };
@@ -93,7 +89,7 @@ namespace BookStore.Controllers
                 //else { TempData["msg"] = "Error Please Try Again"; }              
                
             }
-            ViewBag.language = new SelectList(await _languageRepository.GetAllLanguage(), "Id", "Name");
+            //ViewBag.language = new SelectList(await _languageRepository.GetAllLanguage(), "Id", "Name");
             ViewBag.IsSuccess = false;
             ViewBag.BookId = 0;
 

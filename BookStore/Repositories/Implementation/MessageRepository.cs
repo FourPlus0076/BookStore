@@ -1,12 +1,19 @@
-﻿using BookStore.Repositories.Interface;
+﻿using BookStore.Models;
+using BookStore.Repositories.Interface;
+using Microsoft.Extensions.Options;
 
 namespace BookStore.Repositories.Implementation
 {
     public class MessageRepository : IMessageRepository
     {
-        public string AlertMessage() 
+        private readonly AlertBookModel _alertBook;
+        public MessageRepository(IOptionsMonitor<AlertBookModel> alertBook)
         {
-            return "";
+            _alertBook = alertBook.CurrentValue;
+        }
+        public string GetName() 
+        {
+            return _alertBook.Name;
         }
     }
 }
