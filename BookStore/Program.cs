@@ -12,8 +12,7 @@ builder.Services.AddDbContext<BookStoreDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 //Add Identity Role
-builder.Services.AddIdentity<IdentityUser, IdentityRole>();
-//.AddEntityFrameworkStores<BookStoreDbContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<BookStoreDbContext>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();

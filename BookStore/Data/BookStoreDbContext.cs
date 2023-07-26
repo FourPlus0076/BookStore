@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Data
 {
 #nullable disable
-    public class BookStoreDbContext : DbContext
+    public class BookStoreDbContext : IdentityDbContext
     {
         public BookStoreDbContext(DbContextOptions<BookStoreDbContext> options) : base(options) 
         {
