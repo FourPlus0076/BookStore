@@ -8,7 +8,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Sign Up</title>
+    <title>User Registration</title>
     <link href="~/assets/img/favicon.png" rel="icon">
     <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
     <!-- Google Fonts -->
@@ -30,12 +30,23 @@
 
 <div class="container">
 <br />
-<h4>Sign Up</h4>
+<h4>User Registration Form</h4>
 <hr />
         <div class="row">
             <div class="col-md-4">
                 <form asp-action="SignUp">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                     <div class="form-group">
+                        <label asp-for="FName" class="control-label"></label>
+                        <input asp-for="FName" class="form-control" />
+                        <span asp-validation-for="FName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LName" class="control-label"></label>
+                        <input asp-for="LName" class="form-control" />
+                        <span asp-validation-for="LName" class="text-danger"></span>
+                    </div>
+
                     <div class="form-group">
                         <label asp-for="Email" class="control-label"></label>
                         <input asp-for="Email" class="form-control" />
@@ -57,7 +68,7 @@
                 </form>
             </div>
             <div class="col-md-8">
-                <img src="~/assets/UserLoginImage.png"/>
+                <img src="~/assets/unlocking.jpg"/>
             </div>
         </div>
 

@@ -5,6 +5,13 @@ namespace BookStore.Models
 #nullable disable
     public class SignUpUserModel
     {
+        [Required(ErrorMessage ="Enter First Name")]
+        [Display(Name ="First Name")]
+        public string FName { get; set; }
+        [Required(ErrorMessage = "Enter Last Name")]
+        [Display(Name = "Last Name")]
+        public string LName { get; set; }
+
         [Required(ErrorMessage ="Enter Email Address")]
         [Display(Name ="Email Address")]
         [EmailAddress(ErrorMessage ="Enter Valid Email")]        

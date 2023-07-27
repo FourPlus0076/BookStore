@@ -12,7 +12,7 @@ builder.Services.AddDbContext<BookStoreDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 //Add Identity Role
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<BookStoreDbContext>();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<BookStoreDbContext>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
@@ -27,6 +27,7 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation().AddViewOptions(opt
 builder.Services.AddScoped<IBookRepository , BookRepository>();
 builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
 builder.Services.AddSingleton<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.Configure<AlertBookModel>("InternalBook",builder.Configuration.GetSection("AlertBook"));
 builder.Services.Configure<AlertBookModel>("ThirdPartyBook", builder.Configuration.GetSection("ThirdPartyBook"));
 
