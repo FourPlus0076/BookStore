@@ -13,6 +13,15 @@ builder.Services.AddDbContext<BookStoreDbContext>(options =>
 });
 //Add Identity Role
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<BookStoreDbContext>();
+builder.Services.Configure<IdentityOptions>(options => {
+    options.Password.RequiredLength = 5;
+    options.Password.RequiredUniqueChars = 1;
+    options.Password.RequireDigit= false;
+    options.Password.RequireLowercase= false;
+    options.Password.RequireUppercase= false;
+    options.Password.RequireNonAlphanumeric= false;
+
+});
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();

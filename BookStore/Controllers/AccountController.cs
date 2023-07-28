@@ -35,5 +35,25 @@ namespace BookStore.Controllers
             
             return View();
         }
+
+        public IActionResult UserLogin()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> UserLogin(SignInUserModel model)
+        {
+            if (ModelState.IsValid) {
+                var result = await _accountRepository.UserLogin(model);
+                if (result.Succeeded)
+                {
+                    RedirectToAction("Index", "Home");
+                }
+                else { ModelState.AddModelError("", "Invalid Credaincial"); }
+                
+
+            }
+            return View(model);
+        }
     }
 }
