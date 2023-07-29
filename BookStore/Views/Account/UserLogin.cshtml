@@ -34,7 +34,8 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="UserLogin">
+          <form method="post">
+             @*asp-action="Login"*@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
@@ -53,18 +54,18 @@
                
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Sign In" class="btn btn-primary" />
             </div>
+             <div>
+                 <span>Cliek <a asp-controller="Account" asp-action="SignUp">here</a> to Registration page</span>
+             </div>
         </form>
     </div>
     <div class="col-md-8">
-        <img src="~/assets/unlocking.jpg" />
+        <img src="~/assets/loginImages.jpg" />
     </div>
 </div>
 
-<div>
-        <a asp-controller="Account" asp-action="SignUp">Registration</a>
-</div>
 </div>
 
 

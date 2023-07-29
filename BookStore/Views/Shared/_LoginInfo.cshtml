@@ -1,0 +1,32 @@
+﻿@inject Microsoft.AspNetCore.Identity.SignInManager<ApplicationUser> _signIn
+@if (_signIn.IsSignedIn(User))
+{
+    <li class="nav-item dropdown">
+        <button class="btn btn-outline-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+            Hello @User.Identity.Name
+      </button>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" asp-controller="Account" asp-action="Logout"> Logout</a>
+      </div>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Login" asp-route-returnURL="@Context.Request.Path">Login</a>
+       @* <button class="btn btn-outline-primary" onclick="UserLogin()" asp-route-returnURL="@Context.Request.Path">Login</button>*@
+        <button class="btn btn-outline-primary" onclick="UserRegistration()">Registration</button>
+   </li>}
+<script>
+    function UserLogin()
+    {       
+        window.location = "/Login";
+    }
+     function UserRegistration()
+    {       
+        window.location = "/Account/SignUp/";
+    }
+</script>
+
+
+  

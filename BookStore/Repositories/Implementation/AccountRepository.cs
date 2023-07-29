@@ -34,5 +34,10 @@ namespace BookStore.Repositories.Implementation
              
         }
 
+        public async Task SignOutUser()
+        {
+            await _signInManager.SignOutAsync();
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BookStore.Models;
 using BookStore.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -26,6 +27,7 @@ namespace BookStore.Controllers
             var data= await _bookRepository.GetAllBook();
             return View(data);
         }
+        [Authorize]
         public async Task<IActionResult> AddNewBook(bool isSuccess=false,int bookId=0)
         {
             var book = new BookModel() { 

@@ -57,14 +57,7 @@
                 </ul>
                 </li>     *@
             </ul>
-            <ul>
-                <li>
-                   @* <button class="btn btn-outline-primary" href="#contact">Login</button>*@
-                   <a class="btn btn-outline-primary" asp-controller="Account" asp-action="SignUp">Login</a>
-                   @*<button class="btn btn-outline-primary" href="/Account/SignUp/">Registration</button>*@
-                   <a class="btn btn-outline-primary" asp-controller="Account" asp-action="SignUp">Registration</a>
-                </li>
-            </ul>
+            <partial name="_LoginInfo"/>
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->
 

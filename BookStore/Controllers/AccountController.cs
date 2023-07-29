@@ -10,7 +10,7 @@ namespace BookStore.Controllers
 
         public AccountController(IAccountRepository accountRepository)
         {
-            _accountRepository=accountRepository;
+            _accountRepository = accountRepository;
         }
         public IActionResult SignUp()
         {
@@ -32,28 +32,40 @@ namespace BookStore.Controllers
                 }
                 ModelState.Clear();
             }
-            
+
             return View();
         }
 
+        [Route("Login")]
         public IActionResult UserLogin()
         {
             return View();
         }
-        [HttpPost]
-        public async Task<IActionResult> UserLogin(SignInUserModel model)
+        [Route("Login")]
+        [HttpPost]       
+        public async Task<IActionResult> Login(SignInUserModel model, string returnURL)
         {
             if (ModelState.IsValid) {
                 var result = await _accountRepository.UserLogin(model);
                 if (result.Succeeded)
                 {
-                    RedirectToAction("Index", "Home");
+                    if (!string.IsNullOrEmpty(returnURL))
+                    {
+                        return LocalRedirect(returnURL);
+                    }
+                   return RedirectToAction("Index", "Home");
                 }
                 else { ModelState.AddModelError("", "Invalid Credaincial"); }
                 
 
             }
             return View(model);
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await _accountRepository.SignOutUser();
+            return RedirectToAction("Index","Home");
         }
     }
 }

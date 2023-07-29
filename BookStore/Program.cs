@@ -22,6 +22,9 @@ builder.Services.Configure<IdentityOptions>(options => {
     options.Password.RequireNonAlphanumeric= false;
 
 });
+builder.Services.ConfigureApplicationCookie(config => {
+    config.LoginPath = builder.Configuration["Application:LoginPath"];
+});
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
