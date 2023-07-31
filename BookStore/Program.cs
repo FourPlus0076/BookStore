@@ -1,7 +1,9 @@
 using BookStore.Data;
+using BookStore.Helpers;
 using BookStore.Models;
 using BookStore.Repositories.Implementation;
 using BookStore.Repositories.Interface;
+using BookStore.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,6 +42,10 @@ builder.Services.AddScoped<IBookRepository , BookRepository>();
 builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
 builder.Services.AddSingleton<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>,ApplicationUserClaimsPrincipalFactory>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services.Configure<AlertBookModel>("InternalBook",builder.Configuration.GetSection("AlertBook"));
 builder.Services.Configure<AlertBookModel>("ThirdPartyBook", builder.Configuration.GetSection("ThirdPartyBook"));
 

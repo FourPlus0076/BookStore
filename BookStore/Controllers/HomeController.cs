@@ -1,5 +1,6 @@
 ﻿using BookStore.Models;
 using BookStore.Repositories.Interface;
+using BookStore.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
@@ -14,6 +15,7 @@ namespace BookStore.Controllers
         private readonly AlertBookModel _options;
         private readonly AlertBookModel _thirdPartyBook;
         private readonly IMessageRepository _messageRepository;
+        private readonly IUserService _userService;
         [ViewData]
         public string CustomProperty { get; set; }
         [ViewData]       
@@ -21,18 +23,23 @@ namespace BookStore.Controllers
         [ViewData]
         public BookModel bookModel { get; set; }
 
-        public HomeController(ILogger<HomeController> logger, IConfiguration configuration, IOptionsSnapshot<AlertBookModel> options, IOptionsSnapshot<AlertBookModel> thirdPartyBook,IMessageRepository messageRepository)
+        public HomeController(ILogger<HomeController> logger, IConfiguration configuration, IOptionsSnapshot<AlertBookModel> options, IOptionsSnapshot<AlertBookModel> thirdPartyBook,
+            IMessageRepository messageRepository, IUserService userService)
         {
             _logger = logger;
             _configuration = configuration;
             _options= options.Get("InternalBook");
             _thirdPartyBook = thirdPartyBook.Get("ThirdPartyBook");
             _messageRepository = messageRepository;
+            _userService = userService;
 
         }
 
         public IActionResult Index()
         {
+            var currentUserId=_userService.GetUserId();
+            var LoggedIncurrentActive = _userService.IsAthunticated();
+
             var value = _messageRepository.GetName();
             bool isActive = _options.IsActive;
             var book = _thirdPartyBook.Name;

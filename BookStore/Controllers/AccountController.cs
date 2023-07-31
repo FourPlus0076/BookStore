@@ -42,7 +42,7 @@ namespace BookStore.Controllers
             return View();
         }
         [Route("Login")]
-        [HttpPost]       
+        [HttpPost]
         public async Task<IActionResult> Login(SignInUserModel model, string returnURL)
         {
             if (ModelState.IsValid) {
@@ -53,10 +53,9 @@ namespace BookStore.Controllers
                     {
                         return LocalRedirect(returnURL);
                     }
-                   return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
                 else { ModelState.AddModelError("", "Invalid Credaincial"); }
-                
 
             }
             return View(model);
@@ -65,7 +64,31 @@ namespace BookStore.Controllers
         public async Task<IActionResult> Logout()
         {
             await _accountRepository.SignOutUser();
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
+        }
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result= await _accountRepository.ChangePassword(model);
+                if (result.Succeeded)
+                {
+                    ViewBag.IsSuccess=true;
+                    ModelState.Clear();
+                    return View();
+                }
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError("",item.Description);
+                }
+            }
+            return View();
         }
     }
 }
