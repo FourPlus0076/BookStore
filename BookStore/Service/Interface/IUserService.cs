@@ -1,4 +1,4 @@
-﻿namespace BookStore.Service
+﻿namespace BookStore.Service.Interface
 {
     public interface IUserService
     {

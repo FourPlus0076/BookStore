@@ -1,7 +1,9 @@
 ﻿using System.Security.Claims;
+using BookStore.Service.Interface;
 
-namespace BookStore.Service
+namespace BookStore.Service.Implementation
 {
+#nullable disable
     public class UserService : IUserService
     {
         private readonly IHttpContextAccessor _httpContent;

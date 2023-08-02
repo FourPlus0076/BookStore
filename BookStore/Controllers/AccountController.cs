@@ -1,5 +1,6 @@
 ﻿using BookStore.Models;
 using BookStore.Repositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookStore.Controllers
@@ -31,13 +32,14 @@ namespace BookStore.Controllers
                     return View(model);
                 }
                 ModelState.Clear();
+                return RedirectToAction("ConfirmEmail", new {email = model.Email });
             }
 
-            return View();
+            return View(model);
         }
 
         [Route("Login")]
-        public IActionResult UserLogin()
+        public IActionResult Login()
         {
             return View();
         }
@@ -54,6 +56,10 @@ namespace BookStore.Controllers
                         return LocalRedirect(returnURL);
                     }
                     return RedirectToAction("Index", "Home");
+                }
+                if (result.IsNotAllowed)
+                {
+                    ModelState.AddModelError("", "Not allowed to login");
                 }
                 else { ModelState.AddModelError("", "Invalid Credaincial"); }
 
@@ -89,6 +95,60 @@ namespace BookStore.Controllers
                 }
             }
             return View();
+        }
+        [HttpGet("Confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string uid,string token,string email) 
+        {
+            EmailConfirmModel model = new EmailConfirmModel() { 
+              Email = email,
+            };
+            if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token))
+            {
+                token = token.Replace(' ','+');
+                var result= await _accountRepository.ConfirmEmailAsync(uid,token);
+                if (result.Succeeded)
+                {
+                   model.EmailVerified = true;
+                }
+            }
+            return View(model);
+        }
+
+        [HttpPost("Confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(EmailConfirmModel model)
+        {
+           var user=await _accountRepository.GetUserByEmailAsync(model.Email);
+            if (user != null)
+            {
+                if (user.EmailConfirmed)
+                {
+                    model.EmailVerified = true;
+                    return View(model);
+                }
+                await _accountRepository.GenerateEmailConfirmationTokenAsync(user);
+                model.SendEmail = true;
+                ModelState.Clear();
+            }
+            else {
+                ModelState.AddModelError("","Something went wrong");
+            }
+           return View(model);
+        }
+        [AllowAnonymous,HttpGet("forgot-password")]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+        [AllowAnonymous, HttpPost("forgot-password")]
+        public IActionResult ForgotPassword(ForgotPasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                ///code here
+                ModelState.Clear();
+                model.EmailSend = true;
+            }
+            return View(model);
         }
     }
 }

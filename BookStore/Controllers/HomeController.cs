@@ -1,6 +1,6 @@
 ﻿using BookStore.Models;
 using BookStore.Repositories.Interface;
-using BookStore.Service;
+using BookStore.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
@@ -16,6 +16,8 @@ namespace BookStore.Controllers
         private readonly AlertBookModel _thirdPartyBook;
         private readonly IMessageRepository _messageRepository;
         private readonly IUserService _userService;
+        private readonly IEmailService _emailService;
+
         [ViewData]
         public string CustomProperty { get; set; }
         [ViewData]       
@@ -24,7 +26,8 @@ namespace BookStore.Controllers
         public BookModel bookModel { get; set; }
 
         public HomeController(ILogger<HomeController> logger, IConfiguration configuration, IOptionsSnapshot<AlertBookModel> options, IOptionsSnapshot<AlertBookModel> thirdPartyBook,
-            IMessageRepository messageRepository, IUserService userService)
+            IMessageRepository messageRepository, IUserService userService,
+            IEmailService emailService)
         {
             _logger = logger;
             _configuration = configuration;
@@ -32,11 +35,30 @@ namespace BookStore.Controllers
             _thirdPartyBook = thirdPartyBook.Get("ThirdPartyBook");
             _messageRepository = messageRepository;
             _userService = userService;
+            _emailService = emailService;
 
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            //try
+            //{
+            //    UserEmailOptionsModel model = new UserEmailOptionsModel
+            //    {
+            //        ToEmails = new List<string>() {"gauss@chetu.com"},
+            //        PlaceHolders=new List<KeyValuePair<string, string>>() { 
+            //          new KeyValuePair<string, string>("{{UserName}}","Gaus S")
+            //        },
+                    
+            //    };
+            //    await _emailService.SendTestEmail(model);
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw ex;
+            //}
+
+
             var currentUserId=_userService.GetUserId();
             var LoggedIncurrentActive = _userService.IsAthunticated();
 
