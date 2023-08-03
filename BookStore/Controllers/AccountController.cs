@@ -140,13 +140,49 @@ namespace BookStore.Controllers
             return View();
         }
         [AllowAnonymous, HttpPost("forgot-password")]
-        public IActionResult ForgotPassword(ForgotPasswordModel model)
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
         {
             if (ModelState.IsValid)
             {
-                ///code here
+                var user = await _accountRepository.GetUserByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    await _accountRepository.GenerateForgotPasswordAsyncTokenAsync(user);
+                }
                 ModelState.Clear();
                 model.EmailSend = true;
+            }
+            return View(model);
+        }
+        [AllowAnonymous,HttpGet("reset-password")]
+        public IActionResult ResetPassword(string uid,string token)
+        {
+            ResetPasswordModel model = new ResetPasswordModel()
+            { 
+               UserId= uid,
+               Token=token
+            };
+            return View();
+        }
+
+        [AllowAnonymous,HttpPost("reset-password")]
+        public async Task<IActionResult> ForgotPassword(ResetPasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.Token = model.Token.Replace(' ','+');
+                var result =await _accountRepository.ResetPasswordAsync(model);
+                if (result.Succeeded)
+                {
+                    ModelState.Clear();
+                    model.IsSuccess = true;
+                    return View(model);
+                }
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError("",item.Description);
+                }
+              
             }
             return View(model);
         }

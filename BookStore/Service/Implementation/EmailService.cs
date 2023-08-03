@@ -25,10 +25,21 @@ namespace BookStore.Service.Implementation
 
         public async Task SendEmailForEmailConfirmation(UserEmailOptionsModel model)
         {
-            model.Subject = UpdatePlaceHolders("Email-Confirmation", model.PlaceHolders);
+            model.Subject = UpdatePlaceHolders("Hello {{UserName}}, Confirm your mail id", model.PlaceHolders);
             model.Body = UpdatePlaceHolders(GetEmailBody("EmailConfirm"), model.PlaceHolders);
             await SendEmail(model);
         }
+
+
+        public async Task SendEmailForgotPassword(UserEmailOptionsModel model)
+        {
+            model.Subject = UpdatePlaceHolders("Hello {{UserName}}, reset your password", model.PlaceHolders);
+            model.Body = UpdatePlaceHolders(GetEmailBody("ForgotPassword"), model.PlaceHolders);
+            await SendEmail(model);
+        }
+
+
+
         private async Task SendEmail(UserEmailOptionsModel model)
         {
             MailMessage mail = new MailMessage

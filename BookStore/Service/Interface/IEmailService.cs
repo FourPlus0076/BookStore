@@ -6,5 +6,6 @@ namespace BookStore.Service.Interface
     {     
         Task SendTestEmail(UserEmailOptionsModel model);
         Task SendEmailForEmailConfirmation(UserEmailOptionsModel model);
+        Task SendEmailForgotPassword(UserEmailOptionsModel model);
     }
 }
