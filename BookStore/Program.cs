@@ -19,11 +19,17 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFramework
 builder.Services.Configure<IdentityOptions>(options => {
     options.Password.RequiredLength = 5;
     options.Password.RequiredUniqueChars = 1;
-    options.Password.RequireDigit= false;
-    options.Password.RequireLowercase= false;
-    options.Password.RequireUppercase= false;
-    options.Password.RequireNonAlphanumeric= false;
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
 
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(20);
+    options.Lockout.MaxFailedAccessAttempts = 3;
+
+});
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options => {
+    options.TokenLifespan = TimeSpan.FromMinutes(5);
 });
 builder.Services.ConfigureApplicationCookie(config => {
     config.LoginPath = builder.Configuration["Application:LoginPath"];
@@ -39,17 +45,17 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation().AddViewOptions(opt
 });
 
 #endif
-builder.Services.AddScoped<IBookRepository , BookRepository>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
 builder.Services.AddSingleton<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
-builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>,ApplicationUserClaimsPrincipalFactory>();
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.Configure<SMTPConfigModel>(builder.Configuration.GetSection("SMTPConfig"));
-builder.Services.Configure<AlertBookModel>("InternalBook",builder.Configuration.GetSection("AlertBook"));
+builder.Services.Configure<AlertBookModel>("InternalBook", builder.Configuration.GetSection("AlertBook"));
 builder.Services.Configure<AlertBookModel>("ThirdPartyBook", builder.Configuration.GetSection("ThirdPartyBook"));
 
 var app = builder.Build();

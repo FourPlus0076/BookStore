@@ -1,6 +1,7 @@
 ﻿using BookStore.Models;
 using BookStore.Repositories.Interface;
 using BookStore.Service.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
@@ -84,6 +85,7 @@ namespace BookStore.Controllers
             return View();
             //return View("TempView/GausTemp.cshtml");
         }
+        [Authorize(Roles ="Admin")]
         public IActionResult AboutUs()
         {
             return View();

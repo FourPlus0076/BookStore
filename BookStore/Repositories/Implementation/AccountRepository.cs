@@ -71,7 +71,7 @@ namespace BookStore.Repositories.Implementation
 
         public async Task<SignInResult> UserLogin(SignInUserModel model)
         {
-            return await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+            return await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
 
         }
 
